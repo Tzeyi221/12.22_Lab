@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roll the Dice</title>
+  <style>
+    .dieImage {
+      width: 150px; /* Set the desired width of the die image */
+      height: 150px; /* Set the desired height of the die image */
+      margin: 10px; /* Add margin between dice for better visibility */
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Roll the Dice</h1>
+
+  <button onclick="rollDice()">Roll 12 Dice</button>
+
+  <div id="diceContainer"></div>
+
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Die Face</th>
+        <th>Occurrences</th>
+        <th>Probability</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    function rollDice() {
+      // Clear previous dice images and table
+      document.getElementById("diceContainer").innerHTML = "";
+      document.getElementById("resultTable").getElementsByTagName('tbody')[0].innerHTML = "";
+
+      // Initialize an array to store occurrences of each die face
+      var occurrences = [0, 0, 0, 0, 0, 0];
+
+      // Roll 12 dice
+      for (let i = 0; i < 12; i++) {
+        // Get a random number between 1 and 6
+        var randomNumber = Math.floor(Math.random() * 6) + 1;
+
+        // Build the file name of the die image
+        var imageName = "die" + randomNumber + ".png";
+
+        // Create a new img element for each die
+        var dieImage = document.createElement("img");
+        dieImage.src = imageName;
+        dieImage.alt = "Die Image";
+        dieImage.className = "dieImage";
+
+        // Append the new img element to the dice container
+        document.getElementById("diceContainer").appendChild(dieImage);
+
+        // Update occurrences array
+        occurrences[randomNumber - 1]++;
+      }
+
+      // Update the table with results
+      updateTable(occurrences);
+    }
+
+    function updateTable(occurrences) {
+      var tableBody = document.getElementById("resultTable").getElementsByTagName('tbody')[0];
+
+      for (let i = 0; i < occurrences.length; i++) {
+        var row = tableBody.insertRow();
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+
+        cell1.textContent = i + 1;
+        cell2.textContent = occurrences[i];
+        cell3.textContent = (occurrences[i] / 12).toFixed(2); // Calculate probability
+      }
+    }
+  </script>
+
+</body>
+</html>
